@@ -1,0 +1,42 @@
+{
+  "task_id": "T12",
+  "task_name": "Skill Maker",
+  "agent": "Skill Maker",
+  "status": "completed",
+  "completed_at": "2026-03-08T00:00:00Z",
+  "deliverables": [
+    {
+      "file": ".claude/skills/add-channel.md",
+      "description": "Skill for adding a new messaging channel. Includes step-by-step instructions, full Rust template with Channel + FileTransfer trait implementations, lib.rs and Cargo.toml integration steps, test template, and security conventions (DF-16 allowlist, CA-04 user ID matching). References telegram.rs and cli.rs as examples."
+    },
+    {
+      "file": ".claude/skills/add-provider.md",
+      "description": "Skill for adding a new AI provider. Includes full Provider trait template with SSE streaming pattern using futures::stream::unfold, request body construction, error mapping (429->RateLimited, 401->Auth), tool use support, health check, and builder pattern. References anthropic.rs and openai_compat.rs as examples."
+    },
+    {
+      "file": ".claude/skills/add-memory-backend.md",
+      "description": "Skill for adding a new memory backend. Includes full Memory trait template with all 7 trait methods (store, search, get, delete, list_sessions, get_session_history, backend_name), entry type serialization helpers, upsert and idempotent delete semantics, search with session and entry type filters. References sqlite.rs and markdown.rs as examples."
+    },
+    {
+      "file": ".claude/skills/add-tool.md",
+      "description": "Skill for adding a new agent tool. Includes full Tool trait template with ToolDeclarations for sandbox enforcement, JSON Schema for parameters, ToolInput/ToolOutput pattern, distinction between tool errors (is_error: true) and infrastructure failures (Err), path traversal prevention, and audit logging guidance."
+    },
+    {
+      "file": ".claude/skills/debug-skyclaw.md",
+      "description": "Skill for debugging SkyClaw issues. Covers 7-step diagnostic process (reproduce, check compilation, run tests, lint, trace message flow, check config, enable verbose logging). Includes complete message flow diagram, all crate file references per flow stage, common issues with fixes, SkyclawError variant reference table, and crate dependency graph."
+    },
+    {
+      "file": "CLAUDE.md",
+      "description": "Root project guide for Claude Code. Covers project overview, build commands, workspace structure, architecture rules (traits in core, no cross-impl deps, feature flags, factory pattern), message flow, code style conventions (Rust 2021, async_trait, SkyclawError, tracing, serde), testing conventions, security conventions, configuration reference, and skill index."
+    }
+  ],
+  "summary": "Created 5 Claude Code skills and a root CLAUDE.md for the SkyClaw project. Each skill includes step-by-step instructions, complete Rust code templates derived from actual codebase patterns, integration checklists, test templates, verification commands, and key conventions. The CLAUDE.md provides Claude Code with full project context including architecture rules, build commands, code style, and testing patterns. All templates reference real trait signatures and error types from skyclaw-core.",
+  "artifacts_count": 6,
+  "skills_created": [
+    "add-channel",
+    "add-provider",
+    "add-memory-backend",
+    "add-tool",
+    "debug-skyclaw"
+  ]
+}
