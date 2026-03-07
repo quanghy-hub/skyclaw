@@ -38,6 +38,7 @@ pub struct ToolOutput {
 pub struct ToolContext {
     pub workspace_path: std::path::PathBuf,
     pub session_id: String,
+    pub chat_id: String,
 }
 
 /// Tool trait — agent capabilities like shell, file ops, browser, etc.

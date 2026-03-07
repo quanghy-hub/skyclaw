@@ -73,6 +73,7 @@ impl Default for SkyclawConfig {
             heartbeat: Default::default(),
             cron: Default::default(),
             channel: Default::default(),
+            agent: Default::default(),
             tools: Default::default(),
             tunnel: None,
             observability: Default::default(),
@@ -108,7 +109,7 @@ tls = true
 [provider]
 name = "anthropic"
 api_key = "test-key-123"
-model = "claude-sonnet-4-20250514"
+model = "claude-sonnet-4-6"
 
 [memory]
 backend = "markdown"

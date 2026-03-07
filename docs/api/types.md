@@ -66,7 +66,7 @@ Request sent to an AI model provider.
 
 ```rust
 pub struct CompletionRequest {
-    pub model: String,                // Model identifier (e.g., "claude-sonnet-4-20250514")
+    pub model: String,                // Model identifier (e.g., "claude-sonnet-4-6")
     pub messages: Vec<ChatMessage>,   // Conversation history
     pub tools: Vec<ToolDefinition>,   // Available tool definitions
     pub max_tokens: Option<u32>,      // Maximum response tokens

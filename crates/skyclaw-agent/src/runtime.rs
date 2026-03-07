@@ -18,6 +18,9 @@ use crate::executor::execute_tool;
 /// Maximum number of tool-use rounds before forcing a text reply.
 const MAX_TOOL_ROUNDS: usize = 10;
 
+/// Maximum characters per tool output (roughly ~8K tokens).
+const MAX_TOOL_OUTPUT_CHARS: usize = 30_000;
+
 /// The core agent runtime. Holds references to the AI provider, memory backend,
 /// and registered tools.
 pub struct AgentRuntime {
@@ -26,6 +29,8 @@ pub struct AgentRuntime {
     tools: Vec<Arc<dyn Tool>>,
     model: String,
     system_prompt: Option<String>,
+    max_turns: usize,
+    max_context_tokens: usize,
 }
 
 impl AgentRuntime {
@@ -43,6 +48,29 @@ impl AgentRuntime {
             tools,
             model,
             system_prompt,
+            max_turns: 6,
+            max_context_tokens: 30_000,
+        }
+    }
+
+    /// Create a new AgentRuntime with custom context limits.
+    pub fn with_limits(
+        provider: Arc<dyn Provider>,
+        memory: Arc<dyn Memory>,
+        tools: Vec<Arc<dyn Tool>>,
+        model: String,
+        system_prompt: Option<String>,
+        max_turns: usize,
+        max_context_tokens: usize,
+    ) -> Self {
+        Self {
+            provider,
+            memory,
+            tools,
+            model,
+            system_prompt,
+            max_turns,
+            max_context_tokens,
         }
     }
 
@@ -63,8 +91,26 @@ impl AgentRuntime {
             "Processing inbound message"
         );
 
-        // Scan user message for leaked credentials (DF-02)
-        let user_text = msg.text.clone().unwrap_or_default();
+        // Build user text — include attachment descriptions if no text provided
+        let user_text = match (&msg.text, msg.attachments.is_empty()) {
+            (Some(t), _) if !t.trim().is_empty() => t.clone(),
+            (_, false) => {
+                let descs: Vec<String> = msg.attachments.iter().map(|a| {
+                    let name = a.file_name.as_deref().unwrap_or("file");
+                    let mime = a.mime_type.as_deref().unwrap_or("unknown type");
+                    format!("[Attached: {} ({})]", name, mime)
+                }).collect();
+                descs.join(" ")
+            }
+            _ => {
+                return Ok(OutboundMessage {
+                    chat_id: msg.chat_id.clone(),
+                    text: "I received an empty message. Please send some text or a file.".to_string(),
+                    reply_to: Some(msg.id.clone()),
+                    parse_mode: None,
+                });
+            }
+        };
         let detected_creds = skyclaw_vault::detect_credentials(&user_text);
         if !detected_creds.is_empty() {
             warn!(
@@ -102,6 +148,8 @@ impl AgentRuntime {
                 &self.tools,
                 &self.model,
                 self.system_prompt.as_deref(),
+                self.max_turns,
+                self.max_context_tokens,
             )
             .await;
 
@@ -142,7 +190,7 @@ impl AgentRuntime {
                     chat_id: msg.chat_id.clone(),
                     text: reply_text,
                     reply_to: Some(msg.id.clone()),
-                    parse_mode: Some(ParseMode::Markdown),
+                    parse_mode: None,
                 });
             }
 
@@ -161,7 +209,15 @@ impl AgentRuntime {
                 let result = execute_tool(tool_name, arguments.clone(), &self.tools, session).await;
 
                 let (content, is_error) = match result {
-                    Ok(output) => (output.content, output.is_error),
+                    Ok(output) => {
+                        let c = if output.content.len() > MAX_TOOL_OUTPUT_CHARS {
+                            let truncated = &output.content[..MAX_TOOL_OUTPUT_CHARS];
+                            format!("{}...\n\n[Output truncated — {} chars total]", truncated, output.content.len())
+                        } else {
+                            output.content
+                        };
+                        (c, output.is_error)
+                    }
                     Err(e) => (format!("Tool execution error: {}", e), true),
                 };
 

@@ -172,7 +172,7 @@ port = 8080
 [provider]
 name = "anthropic"
 api_key = "${ANTHROPIC_API_KEY}"
-model = "claude-sonnet-4-20250514"
+model = "claude-sonnet-4-6"
 
 [memory]
 backend = "sqlite"

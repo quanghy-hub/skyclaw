@@ -46,6 +46,7 @@ pub async fn execute_tool(
     let ctx = ToolContext {
         workspace_path: session.workspace_path.clone(),
         session_id: session.session_id.clone(),
+        chat_id: session.chat_id.clone(),
     };
 
     let input = ToolInput {

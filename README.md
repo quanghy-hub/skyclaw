@@ -92,7 +92,7 @@ cp config/default.toml ~/.skyclaw/config.toml
 [provider]
 name = "anthropic"
 api_key = "${ANTHROPIC_API_KEY}"
-model = "claude-sonnet-4-20250514"
+model = "claude-sonnet-4-6"
 ```
 
 3. Enable a channel (e.g., Telegram):

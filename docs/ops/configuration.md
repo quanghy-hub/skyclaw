@@ -40,7 +40,7 @@ Any configuration key can be set via an environment variable using the `SKYCLAW_
 | `SKYCLAW_GATEWAY__PORT` | `gateway.port` | `443` |
 | `SKYCLAW_GATEWAY__TLS` | `gateway.tls` | `true` |
 | `SKYCLAW_PROVIDER__NAME` | `provider.name` | `anthropic` |
-| `SKYCLAW_PROVIDER__MODEL` | `provider.model` | `claude-sonnet-4-20250514` |
+| `SKYCLAW_PROVIDER__MODEL` | `provider.model` | `claude-sonnet-4-6` |
 | `SKYCLAW_MEMORY__BACKEND` | `memory.backend` | `postgres` |
 | `SKYCLAW_OBSERVABILITY__LOG_LEVEL` | `observability.log_level` | `debug` |
 | `SKYCLAW_OBSERVABILITY__OTEL_ENABLED` | `observability.otel_enabled` | `true` |

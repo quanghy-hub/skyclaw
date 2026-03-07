@@ -4048,6 +4048,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "dirs",
  "serde",
  "skyclaw-agent",
  "skyclaw-automation",
@@ -4244,7 +4245,10 @@ dependencies = [
 name = "skyclaw-tools"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
+ "bytes",
  "chromiumoxide",
+ "reqwest",
  "serde",
  "serde_json",
  "skyclaw-core",

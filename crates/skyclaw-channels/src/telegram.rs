@@ -67,10 +67,11 @@ impl TelegramChannel {
     ///
     /// Only numeric user IDs are matched. Usernames are ignored because
     /// they can be changed, enabling allowlist bypass (CA-04).
-    /// An empty allowlist denies all users (DF-16).
+    /// An empty allowlist allows all users (open access).
+    /// A non-empty allowlist restricts to listed user IDs only.
     fn check_allowed(&self, user_id: &str, _username: Option<&str>) -> bool {
         if self.allowlist.is_empty() {
-            return false;
+            return true;
         }
         self.allowlist.iter().any(|a| a == user_id)
     }
@@ -277,10 +278,10 @@ async fn handle_telegram_message(
     let username = user.and_then(|u| u.username.clone());
 
     // Allowlist check: only match on numeric user ID (CA-04).
-    // Empty allowlist denies all users (DF-16).
+    // Empty allowlist = open access. Non-empty = restricted.
     {
         let allowed = if allowlist.is_empty() {
-            false
+            true
         } else {
             allowlist.iter().any(|a| a == &user_id)
         };

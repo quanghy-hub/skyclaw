@@ -25,6 +25,8 @@ pub struct SkyclawConfig {
     #[serde(default)]
     pub channel: HashMap<String, ChannelConfig>,
     #[serde(default)]
+    pub agent: AgentConfig,
+    #[serde(default)]
     pub tools: ToolsConfig,
     #[serde(default)]
     pub tunnel: Option<TunnelConfig>,
@@ -269,6 +271,28 @@ pub struct ChannelConfig {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct AgentConfig {
+    /// Maximum number of recent message pairs (user+assistant) to keep in context.
+    #[serde(default = "default_max_turns")]
+    pub max_turns: usize,
+    /// Maximum estimated token count for the entire context window.
+    #[serde(default = "default_max_context_tokens")]
+    pub max_context_tokens: usize,
+}
+
+impl Default for AgentConfig {
+    fn default() -> Self {
+        Self {
+            max_turns: 6,
+            max_context_tokens: 30_000,
+        }
+    }
+}
+
+fn default_max_turns() -> usize { 6 }
+fn default_max_context_tokens() -> usize { 30_000 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ToolsConfig {
     #[serde(default = "default_true")]
     pub shell: bool,
@@ -334,7 +358,7 @@ mod tests {
         let config = SkyclawConfig {
             skyclaw: SkyclawSection { mode: "cloud".to_string(), tenant_isolation: true },
             gateway: GatewayConfig { host: "0.0.0.0".to_string(), port: 443, tls: true, tls_cert: Some("cert.pem".to_string()), tls_key: Some("key.pem".to_string()) },
-            provider: ProviderConfig { name: Some("anthropic".to_string()), api_key: Some("sk-test".to_string()), model: Some("claude-sonnet-4-20250514".to_string()), base_url: None },
+            provider: ProviderConfig { name: Some("anthropic".to_string()), api_key: Some("sk-test".to_string()), model: Some("claude-sonnet-4-6".to_string()), base_url: None },
             memory: MemoryConfig::default(),
             vault: VaultConfig::default(),
             filestore: FileStoreConfig::default(),
@@ -342,6 +366,7 @@ mod tests {
             heartbeat: HeartbeatConfig::default(),
             cron: CronConfig::default(),
             channel: HashMap::new(),
+            agent: AgentConfig::default(),
             tools: ToolsConfig::default(),
             tunnel: None,
             observability: ObservabilityConfig::default(),

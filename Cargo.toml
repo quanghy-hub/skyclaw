@@ -135,6 +135,7 @@ skyclaw-observable.workspace = true
 skyclaw-filestore.workspace = true
 tokio.workspace = true
 clap.workspace = true
+dirs.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
 anyhow.workspace = true

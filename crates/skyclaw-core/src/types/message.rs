@@ -149,7 +149,7 @@ mod tests {
     #[test]
     fn serde_roundtrip_completion_request() {
         let req = CompletionRequest {
-            model: "claude-sonnet-4-20250514".to_string(),
+            model: "claude-sonnet-4-6".to_string(),
             messages: vec![ChatMessage {
                 role: Role::User,
                 content: MessageContent::Text("Hi".to_string()),
@@ -165,7 +165,7 @@ mod tests {
         };
         let json = serde_json::to_string(&req).unwrap();
         let restored: CompletionRequest = serde_json::from_str(&json).unwrap();
-        assert_eq!(restored.model, "claude-sonnet-4-20250514");
+        assert_eq!(restored.model, "claude-sonnet-4-6");
         assert_eq!(restored.messages.len(), 1);
         assert_eq!(restored.tools.len(), 1);
         assert_eq!(restored.max_tokens, Some(4096));

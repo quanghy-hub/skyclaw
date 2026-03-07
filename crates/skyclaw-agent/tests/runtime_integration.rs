@@ -32,7 +32,7 @@ async fn simple_text_response() {
     assert_eq!(reply.text, "Hello from the AI!");
     assert_eq!(reply.chat_id, msg.chat_id);
     assert!(reply.reply_to.is_some());
-    assert!(matches!(reply.parse_mode, Some(ParseMode::Markdown)));
+    assert!(reply.parse_mode.is_none());
 }
 
 #[tokio::test]
@@ -58,7 +58,8 @@ async fn runtime_with_no_text_in_inbound_msg() {
     let mut session = make_session();
 
     let reply = runtime.process_message(&msg, &mut session).await.unwrap();
-    assert_eq!(reply.text, "OK");
+    // Empty message with no attachments returns a friendly error
+    assert!(reply.text.contains("empty message"));
 }
 
 #[tokio::test]

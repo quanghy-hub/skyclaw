@@ -60,7 +60,7 @@ AI model provider configuration.
 [provider]
 name = "anthropic"
 api_key = "${ANTHROPIC_API_KEY}"
-model = "claude-sonnet-4-20250514"
+model = "claude-sonnet-4-6"
 # base_url = "https://api.openai.com/v1"   # for openai-compatible
 ```
 
@@ -68,7 +68,7 @@ model = "claude-sonnet-4-20250514"
 |-----|------|---------|-------------|
 | `name` | string? | null | Provider backend: `"anthropic"`, `"openai-compatible"`, `"google"`, `"mistral"`, `"groq"` |
 | `api_key` | string? | null | API key. Supports `${ENV_VAR}` expansion and `vault://key-name` URIs. |
-| `model` | string? | null | Model identifier (e.g., `"claude-sonnet-4-20250514"`, `"gpt-4"`, `"gemini-pro"`). |
+| `model` | string? | null | Model identifier (e.g., `"claude-sonnet-4-6"`, `"gpt-4"`, `"gemini-pro"`). |
 | `base_url` | string? | null | Custom API endpoint. Required for OpenAI-compatible backends (Ollama, vLLM, etc.). |
 
 #### Provider examples
@@ -78,7 +78,7 @@ model = "claude-sonnet-4-20250514"
 [provider]
 name = "anthropic"
 api_key = "vault://anthropic-key"
-model = "claude-sonnet-4-20250514"
+model = "claude-sonnet-4-6"
 ```
 
 **OpenAI-compatible (local Ollama):**
@@ -327,7 +327,7 @@ tls_key = "/etc/skyclaw/key.pem"
 [provider]
 name = "anthropic"
 api_key = "vault://anthropic-key"
-model = "claude-sonnet-4-20250514"
+model = "claude-sonnet-4-6"
 
 [memory]
 backend = "postgres"

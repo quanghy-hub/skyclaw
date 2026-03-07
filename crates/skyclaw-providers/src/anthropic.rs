@@ -398,7 +398,7 @@ impl Provider for AnthropicProvider {
 
     async fn list_models(&self) -> Result<Vec<String>, SkyclawError> {
         Ok(vec![
-            "claude-sonnet-4-20250514".to_string(),
+            "claude-sonnet-4-6".to_string(),
             "claude-opus-4-20250514".to_string(),
             "claude-3-5-sonnet-20241022".to_string(),
             "claude-3-5-haiku-20241022".to_string(),
@@ -556,7 +556,7 @@ mod tests {
     fn build_request_body_basic() {
         let provider = AnthropicProvider::new("test-key".to_string());
         let request = CompletionRequest {
-            model: "claude-sonnet-4-20250514".to_string(),
+            model: "claude-sonnet-4-6".to_string(),
             messages: vec![ChatMessage {
                 role: Role::User,
                 content: MessageContent::Text("Hello".to_string()),
@@ -568,7 +568,7 @@ mod tests {
         };
 
         let body = provider.build_request_body(&request, false).unwrap();
-        assert_eq!(body["model"], "claude-sonnet-4-20250514");
+        assert_eq!(body["model"], "claude-sonnet-4-6");
         assert_eq!(body["max_tokens"], 1024);
         assert_eq!(body["temperature"], 0.5);
         assert_eq!(body["system"], "Be helpful");
