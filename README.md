@@ -14,19 +14,30 @@ No web dashboards. No config files to edit. Just deploy, paste your API key in T
 
 ## 3-Step Setup
 
-```bash
-# 1. Get a bot token from @BotFather on Telegram
+### Step 1: Get a Telegram Bot Token
 
-# 2. Deploy
+1. Open Telegram and search for [@BotFather](https://t.me/BotFather)
+2. Send `/newbot`
+3. Choose a name (e.g. "My SkyClaw") and a username (must end in `bot`, e.g. `my_skyclaw_bot`)
+4. BotFather replies with your bot token — looks like `123456789:ABCdefGHI-jklMNOpqrSTUvwxYZ`
+5. Copy it
+
+### Step 2: Deploy
+
+```bash
 git clone https://github.com/nagisanzenin/skyclaw.git
 cd skyclaw
 cargo build --release
-export TELEGRAM_BOT_TOKEN="your-token-here"
+export TELEGRAM_BOT_TOKEN="123456789:ABCdefGHI-jklMNOpqrSTUvwxYZ"
 ./target/release/skyclaw start
-
-# 3. Open your bot in Telegram and paste your API key
-#    SkyClaw auto-detects the provider and goes online
 ```
+
+### Step 3: Activate
+
+1. Open your bot in Telegram (search for the username you chose)
+2. Send any message — SkyClaw asks for your API key
+3. Paste your key (Anthropic, OpenAI, or Gemini)
+4. SkyClaw validates it against the real API and goes online
 
 ## Supported Providers
 
