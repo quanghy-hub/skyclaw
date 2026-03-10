@@ -16,6 +16,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y \
         ca-certificates \
         chromium \
+        chromium-sandbox \
     && rm -rf /var/lib/apt/lists/*
 
 # chromiumoxide looks for "chromium" or "chromium-browser" on PATH
